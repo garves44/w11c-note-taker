@@ -68,3 +68,8 @@ app.delete('/api/notes/:id', (req, res) => {
         });
     });
 });
+
+// CATCH ALL ROUTE using * to redirect everything else to "/"
+app.get('*', (req, res) => {
+    res.redirect('/');
+});
