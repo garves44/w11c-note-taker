@@ -2,8 +2,12 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { get } = require('http');
-const { send } = require('process');
+const {
+    get
+} = require('http');
+const {
+    send
+} = require('process');
 const app = express();
 
 //Port being used
@@ -14,7 +18,9 @@ let notes = [];
 
 //Middleware
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 app.use(express.json());
 
 //App listener
@@ -42,7 +48,7 @@ app.get('/', (req, res) => {
 // POST route for "/api/notes"
 app.post('/api/notes', (req, res) => {
     fs.readFile('./db/db.js', JSON.stringify(db), (err) => {
-        if(!err){
+        if (!err) {
             res.send('ok');
         }
         throw err;
@@ -50,6 +56,15 @@ app.post('/api/notes', (req, res) => {
 });
 
 //BONUS DELETE route for "/api/notes/:id"
-
-
-
+app.delete('/api/notes/:id', (req, res) => {
+    fs.readFile('db/db.json', 'utf-8', function (err, data) {
+        let db = JSON.parse(data);
+        db.splice(req.params.id, 1)
+        fs.writeFile('db/db.json', JSON.stringify(db), err => {
+            if (!err) {
+                res.send('ok');
+            }
+            throw err;
+        });
+    });
+});
