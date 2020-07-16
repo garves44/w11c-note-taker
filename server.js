@@ -70,21 +70,26 @@ app.post('/api/notes', (req, res) => {
 });
 
 //BONUS DELETE route for "/api/notes/:id"
-app.delete('/api/notes/:id', (req, res) => {
-    fs.readFile('db/db.json', 'utf-8', (err, data) => {
-        let db = JSON.parse(data);
-        db.splice(req.params.id, 1)
-        fs.writeFile('./db/db.json', JSON.stringify(db), err => {
-            if (!err) {
-                res.send('ok');
-            } else {
-                throw err;
-            }
-        });
+app.delete("/api/notes/:id", (req, res) => {
+    fs.readFile("db/db.json", "utf-8", (err, data) => {
+      let db = JSON.parse(data);
+      db.splice(req.params.id, 1);
+      let reindex_db = db.map((currentElement, index) => {
+        currentElement = { ...currentElement, id: index };
+        return currentElement;
+      });
+      fs.writeFile("./db/db.json", JSON.stringify(reindex_db), (err) => {
+        if (!err) {
+          res.send("ok");
+        } else {
+          throw err;
+        }
+      });
     });
-});
+  });
 
 // CATCH ALL ROUTE using * to redirect everything else to "/"
 app.get('*', (req, res) => {
     res.redirect('/');
 });
+
