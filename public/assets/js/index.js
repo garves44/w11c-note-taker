@@ -106,7 +106,7 @@ var handleRenderSaveBtn = function() {
 // Render's the list of note titles
 var renderNoteList = function(notes) {
   $noteList.empty();
-
+  console.log(notes)
   var noteListItems = [];
   
   for (var i = 0; i < notes.length; i++) {
@@ -121,6 +121,7 @@ var renderNoteList = function(notes) {
     noteListItems.push($li);
   }
   $noteList.append(noteListItems);
+  
 };
 
 // Gets notes from the db and renders them to the sidebar
