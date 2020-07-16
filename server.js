@@ -47,24 +47,39 @@ app.get('/', (req, res) => {
 
 // POST route for "/api/notes"
 app.post('/api/notes', (req, res) => {
-    fs.readFile('./db/db.js', JSON.stringify(db), (err) => {
-        if (!err) {
-            res.send('ok');
-        }
-        throw err;
+    let {
+        body
+    } = req;
+    if (body === undefined) {
+        res.send(`Body is undefined!`);
+        return;
+    }
+    fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+        let db = JSON.parse(data);
+        body.id = db.length;
+        db.push(body);
+        fs.writeFile('./db/db.json', JSON.stringify(db), err => {
+            if (!err) {
+                res.send('ok');
+            } else {
+                throw err;
+            }
+
+        });
     });
 });
 
 //BONUS DELETE route for "/api/notes/:id"
 app.delete('/api/notes/:id', (req, res) => {
-    fs.readFile('db/db.json', 'utf-8', function (err, data) {
+    fs.readFile('db/db.json', 'utf-8', (err, data) => {
         let db = JSON.parse(data);
         db.splice(req.params.id, 1)
-        fs.writeFile('db/db.json', JSON.stringify(db), err => {
+        fs.writeFile('./db/db.json', JSON.stringify(db), err => {
             if (!err) {
                 res.send('ok');
+            } else {
+                throw err;
             }
-            throw err;
         });
     });
 });
