@@ -34,11 +34,19 @@ app.get('/notes', (req, res) => {
 });
 
 // GET route for "/api/routes"
-app.get('/api/notes', (req, res) => {
-    fs.readFile('./db/db.json', 'utf-8', (err, data) => {
-        res.send(data);
+app.get("/api/notes", (req, res) => {
+    fs.readFile("./db/db.json", "utf-8", (err, data) => {
+      try {
+        let db = JSON.parse(data);
+        res.send(db);
+      } catch (e) {
+        let arr = [];
+        let obj = JSON.parse("{" + data + "}");
+        arr.push(obj);
+        res.send(arr);
+      }
     });
-});
+  });
 
 // GET route for "/"
 app.get('/', (req, res) => {
