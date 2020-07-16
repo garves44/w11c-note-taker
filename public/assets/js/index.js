@@ -109,10 +109,6 @@ var renderNoteList = function(notes) {
 
   var noteListItems = [];
   
-  if (typeof notes !== object){
-    JSON.parse(notes)
-  }
-
   for (var i = 0; i < notes.length; i++) {
     var note = notes[i];
 
@@ -121,12 +117,9 @@ var renderNoteList = function(notes) {
     var $delBtn = $(
       "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
     );
-    console.log(note)
-
     $li.append($span, $delBtn);
     noteListItems.push($li);
   }
-  console.log(noteListItems);
   $noteList.append(noteListItems);
 };
 
